@@ -52,7 +52,7 @@ function login{
 function selfPost{
     param([string]$Title,[string]$SelfText,[String]$Subreddit)
     
-    #Initiate shitposting
+    #Go to post page
     $IE.navigate2('https://old.reddit.com/submit?selftext=true')
     while ($IE.busy){
         Start-Sleep -Milliseconds 1000
@@ -79,7 +79,8 @@ function selfPost{
 
 function linkPost{
     param([string]$Title,[string]$URL,[String]$Subreddit)
-    #Initiate shitposting
+    
+    #Go to post page
     $IE.navigate2('https://old.reddit.com/submit')
     while ($IE.busy){
         Start-Sleep -Milliseconds 1000
