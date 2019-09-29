@@ -3,7 +3,12 @@ $IE= new-object -ComObject "InternetExplorer.Application"
 $IE.visible = $true
 
 function login{
-    param([string]$UNAME,[string]$PASS)
+    #Request credentials from the user, and exit with 0 if they cancel
+    try{
+        $c = Get-Credential
+    }catch{
+        return 0
+    }
 
     #Navigate to reddit frontpage
     $IE.navigate2('https://old.reddit.com/')
@@ -19,8 +24,8 @@ function login{
     #If fields exist (Indicating that nobody's signed in), sign in with the provided credentials
     if($username){
         #Set the username and password fields
-        $username.value = $UNAME
-        $password.value = $PASS
+        $username.value = $c.UserName
+        $password.value = $c.GetNetworkCredential().Password #Password as plain text
 
         #Click login button
         $btn = $IE.Document.IHTMLDocument3_getElementsByTagName("button")
@@ -65,7 +70,7 @@ function selfPost{
     #Submit post
     $btn = $IE.Document.IHTMLDocument3_getElementsByTagName("button")
     ($btn | Where-Object -FilterScript {($_.name -eq 'submit')}).Click()
-    
+
     #Wait for loading to finish
     while ($IE.busy){
         Start-Sleep -Milliseconds 100
@@ -99,12 +104,18 @@ function linkPost{
     }
 }
 
-#Sign in to reddit, and if it's successful, create a post with the defined parameters
-$loggedIn = login -UNAME "" -PASS "" #Returns 0 if fail, 1 if success, 2 if user already signed in
-if($loggedIn){
-    $title = 'I just put together a powershell that utilizes the Internet Explorer COM object, to sign in to reddit and make a self post'
-    $body = "It's pretty amazing!`n`nYou can find the code I used to make the post you're reading here: https://github.com/chrispyth42/Reddit/blob/master/LoginAndPost.ps1`n`nIt feels incredibly powerful to be able to script a web browser like this c:"
-    $sub = 'Powershell'
-    
+#Log in to reddit
+$loggedIn = login
+
+#If login was successful, make a post
+if($loggedIn -eq 1){
+    $title = "If you could re-do today from the moment you woke up, what would you do differently?"
+    $body = ""
+    $sub = 'askreddit'
     selfPost -Title $title -SelfText $body -Subreddit $sub
+
+#Else, write a failure message and quit internet explorer
+}else{
+    Write-Host("Invalid Username/Password")
+    $IE.Quit()
 }
