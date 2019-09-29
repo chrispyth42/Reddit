@@ -65,6 +65,38 @@ function selfPost{
     #Submit post
     $btn = $IE.Document.IHTMLDocument3_getElementsByTagName("button")
     ($btn | Where-Object -FilterScript {($_.name -eq 'submit')}).Click()
+    
+    #Wait for loading to finish
+    while ($IE.busy){
+        Start-Sleep -Milliseconds 100
+    }
+}
+
+function linkPost{
+    param([string]$Title,[string]$URL,[String]$Subreddit)
+    #Initiate shitposting
+    $IE.navigate2('https://old.reddit.com/submit')
+    while ($IE.busy){
+        Start-Sleep -Milliseconds 1000
+    }
+
+    #Insert Title string
+    $fields = $IE.Document.IHTMLDocument3_getElementsByTagName("textarea")
+    ($fields | Where-Object -FilterScript {$_.name -eq 'title'}).value = $Title
+
+    #Insert URL and subreddit strings
+    $inputs = $IE.Document.IHTMLDocument3_getElementsByTagName("input")
+    ($inputs | Where-Object -FilterScript {$_.name -eq 'url'}).value = $URL
+    ($inputs | Where-Object -FilterScript {($_.name -eq 'sr') -and ($_.id -eq 'sr-autocomplete')}).value = $Subreddit
+
+    #Submit post
+    $btn = $IE.Document.IHTMLDocument3_getElementsByTagName("button")
+    ($btn | Where-Object -FilterScript {($_.name -eq 'submit')}).Click()
+
+    #Wait for loading to finish
+    while ($IE.busy){
+        Start-Sleep -Milliseconds 100
+    }
 }
 
 #Sign in to reddit, and if it's successful, create a post with the defined parameters
