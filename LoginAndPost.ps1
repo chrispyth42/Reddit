@@ -59,8 +59,8 @@ function selfPost{
     ($fields | Where-Object -FilterScript {$_.name -eq 'text'}).value = $SelfText
 
     #Insert subreddit data
-    $sr = $IE.Document.IHTMLDocument3_getElementsByTagName("input")
-    ($sr | Where-Object -FilterScript {($_.name -eq 'sr') -and ($_.id -eq 'sr-autocomplete')}).value = $Subreddit
+    $inputs = $IE.Document.IHTMLDocument3_getElementsByTagName("input")
+    ($inputs | Where-Object -FilterScript {($_.name -eq 'sr') -and ($_.id -eq 'sr-autocomplete')}).value = $Subreddit
 
     #Submit post
     $btn = $IE.Document.IHTMLDocument3_getElementsByTagName("button")
