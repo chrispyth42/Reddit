@@ -67,11 +67,12 @@ function selfPost{
     ($btn | Where-Object -FilterScript {($_.name -eq 'submit')}).Click()
 }
 
+#Sign in to reddit, and if it's successful, create a post with the defined parameters
 $loggedIn = login -UNAME "" -PASS "" #Returns 0 if fail, 1 if success, 2 if user already signed in
 if($loggedIn){
-    $title = 'Posting on reddit via Powershell!'
-    $body = "It's pretty amazing! You can find the code I used to make this post here: https://github.com/chrispyth42/Reddit/blob/master/LoginAndPost.ps1. I just enhanced the code!"
-    $sub = 'testingground4bots'
-
+    $title = 'I just put together a powershell that utilizes the Internet Explorer COM object, to sign in to reddit and make a self post'
+    $body = "It's pretty amazing!`n`nYou can find the code I used to make the post you're reading here: https://github.com/chrispyth42/Reddit/blob/master/LoginAndPost.ps1`n`nIt feels incredibly powerful to be able to script a web browser like this c:"
+    $sub = 'Powershell'
+    
     selfPost -Title $title -SelfText $body -Subreddit $sub
 }
