@@ -8,7 +8,7 @@ $PASS = ""
 
 #Post parameters (selftext)
 $PostTitle = 'Posting on reddit via Powershell!'
-$PostText = "It's pretty amazing! You can find the code I used to make this post here: "
+$PostText = "It's pretty amazing! You can find the code I used to make this post here: https://github.com/chrispyth42/Reddit/blob/master/LoginAndPost.ps1"
 $Subreddit = 'testingground4bots'
 
 #Navigate to reddit and wait for it to load
