@@ -149,8 +149,8 @@ function linkPost{
 function newPost{
     $mode = Read-Host -Prompt 'Self(0) or link(1)?'
     $title = Read-Host -Prompt 'Post title'
-    $subreddit = Read-Host -Prompt 'Subreddit'
     $url_body = Read-Host -Prompt 'Post text or URL'
+    $subreddit = Read-Host -Prompt 'Subreddit'
     return ($mode, $title, $subreddit, $url_body)
 }
 
