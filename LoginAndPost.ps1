@@ -24,6 +24,7 @@ function login{
         try{
             $c = Get-Credential
         }catch{
+            Write-Host("Cancelled")
             return 0
         }
 
@@ -179,6 +180,5 @@ if($loggedIn){
         $again = Read-Host -Prompt 'Make another post? (y/n)'
     }
 }else{
-    Write-Host("Invalid Username/Password")
     $IE.Quit()
 }
