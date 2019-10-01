@@ -1,6 +1,6 @@
 #Open Internet Explorer
 $IE= new-object -ComObject "InternetExplorer.Application"
-$IE.visible = $true
+$IE.visible = $false
 
 #Returns 0 if login failed, 1 if login successful, 2 if a user is already logged in
 function login{
@@ -71,7 +71,7 @@ function login{
 function selfPost{
     param([string]$Title,[string]$SelfText,[String]$Subreddit)
     
-    #Navigate to submission page
+    #Initiate shitposting
     $IE.navigate2('https://old.reddit.com/submit?selftext=true')
     while ($IE.busy){
         Start-Sleep -Milliseconds 1000
@@ -109,8 +109,7 @@ function selfPost{
 #Returns 0 on failure, 1 on success
 function linkPost{
     param([string]$Title,[string]$URL,[String]$Subreddit)
-    
-    #Navigate to submission page
+    #Initiate shitposting
     $IE.navigate2('https://old.reddit.com/submit')
     while ($IE.busy){
         Start-Sleep -Milliseconds 1000
@@ -164,22 +163,35 @@ function makePost{
     }
 }
 
-#Log in to reddit
-$loggedIn = login
+#Uses the above functions to provide an interface for rapidly making new reddit posts
+function main{
+    #Main function in a try block, so that if ctrl-c is used to exit, IE exits too
+    try{
+        #Log in to reddit
+        $loggedIn = login
 
-#If logged in, continue to making the post
-if($loggedIn){
-    #Make post and prompt the user foe consecutive posts
-    Write-Host "----------New Post----------"
-    $p = makePost
-    $again = Read-Host -Prompt 'Make another post? (y/n)'
-    
-    #Continue until user declines to make another post
-    while(($again -eq 'y') -or ($again -eq 'Y')){
-        Write-Host "----------New Post----------"
-        $p = makePost
-        $again = Read-Host -Prompt 'Make another post? (y/n)'
+        #If logged in, continue to making the post
+        if($loggedIn){
+            #Make post and prompt the user foe consecutive posts
+            Write-Host "----------New Post----------"
+            $p = makePost
+            $again = Read-Host -Prompt 'Make another post? (y/n)'
+            
+            #Continue until user declines to make another post
+            while(($again -eq 'y') -or ($again -eq 'Y')){
+                Write-Host "----------New Post----------"
+                $p = makePost
+                $again = Read-Host -Prompt 'Make another post? (y/n)'
+            }
+            $IE.Quit()
+        }else{
+            #If login failed, exit IE before ending script
+            $IE.Quit()
+        }
+    }finally{
+        #If script terminated early, close IE too
+        $IE.Quit()
     }
-}else{
-    $IE.Quit()
 }
+
+main
