@@ -4,7 +4,7 @@ import configparser     #Class to parse configuration files (Reddit credentials 
 import webbrowser       #Class to open the newly created post in the default web browser when it's done
 import re               #Regex to validate urls when making link posts
 
-#Custom dialog class (accepts a tkinter root window as input)
+#Custom dialog class (accepts a tkinter root window, and reddit connection as input)
 class redditGUI:
 
     #Constructor. Assembles the labels and buttons, and creates the 3 input fields in the class's main scope so that the functions can call them
@@ -54,14 +54,24 @@ class redditGUI:
     #Create new self post using the input and the reddit object, and open it in the default web browser
     def selfpost(self):
         if self.sub.get() and self.title.get():
+            #Make post
             post = r.subreddit(self.sub.get()).submit(self.title.get(),selftext=self.text.get())
             webbrowser.open(f'https://redd.it/{post}')
+            
+            #Clear the fields after successfully posting
+            self.title.delete(0,'end')
+            self.text.delete(0,'end')
 
     #Create new link post using the input and the reddit object, and open it in the default web browser
     def linkpost(self):
         if self.sub.get() and self.title.get() and re.match(r"^https?://[^ ]+$",self.text.get()):
+            #Make post
             post = r.subreddit(self.sub.get()).submit(self.title.get(),url=self.text.get())
             webbrowser.open(f'https://redd.it/{post}')
+
+            #Clear the fields after successfully posting
+            self.title.delete(0,'end')
+            self.text.delete(0,'end')
 
     #Exit the script
     def quit(self):
