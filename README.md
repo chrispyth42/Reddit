@@ -11,7 +11,7 @@ Reddit credentials that this script requires are stored in an external file 'cre
       clientSecret = YourAPI'sSecret
       userAgent = yourAPI'sName
 
-Your own credentials can be requested at https://www.reddit.com/prefs/apps/
+Your own API credentials can be requested at https://www.reddit.com/prefs/apps/
 
 ## RedditFromPowershell.ps1
 
