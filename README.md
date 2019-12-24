@@ -4,12 +4,12 @@ This script utilizes tkinter (python's default graphics class), and praw (Reddit
 
 Reddit credentials that this script requires are stored in an external file that has the format.
 
-   [reddit]
-     username = YourUsername
-     password = YourPassword
-     clientID = YourAPI'sID
-     clientSecret = YourAPI'sSecret
-     userAgent = yourAPI'sName
+    [reddit]
+      username = YourUsername
+      password = YourPassword
+      clientID = YourAPI'sID
+      clientSecret = YourAPI'sSecret
+      userAgent = yourAPI'sName
 
 Your own credentials can be requested at https://www.reddit.com/prefs/apps/
 
